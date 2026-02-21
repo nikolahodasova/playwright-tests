@@ -1,13 +1,19 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 import { LoginPage } from '../pages/LoginPage';
+import { InventoryPage } from '../pages/InventoryPage';
+import users from '../test-data/users.json';
 
-test('Login success with POM', async ({ page }) => {
-
+test('User can login and add product to cart', async ({ page }) => {
   const loginPage = new LoginPage(page);
+  const inventoryPage = new InventoryPage(page);
 
   await loginPage.goto();
-  await loginPage.login('tomsmith', 'SuperSecretPassword!');
+  await loginPage.login(
+    users.standard_user.username,
+    users.standard_user.password
+  );
 
-  await expect(page.locator('h2')).toHaveText('Secure Area');
-
+  await inventoryPage.verifyLoaded();
+  await inventoryPage.addProductToCart();
+  await inventoryPage.verifyCartCount('1');
 });

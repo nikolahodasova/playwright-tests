@@ -1,17 +1,24 @@
-import { Page } from '@playwright/test';
+import { Page, Locator } from '@playwright/test';
 
 export class LoginPage {
+  readonly page: Page;
+  readonly username: Locator;
+  readonly password: Locator;
+  readonly loginButton: Locator;
 
-  constructor(private page: Page) {}
-
+  constructor(page: Page) {
+    this.page = page;
+    this.username = page.locator('#user-name');
+    this.password = page.locator('#password');
+    this.loginButton = page.locator('#login-button');
+  }
   async goto() {
-    await this.page.goto('https://the-internet.herokuapp.com/login');
+    await this.page.goto('https://www.saucedemo.com');
   }
 
-  async login(username: string, password: string) {
-    await this.page.fill('#username', username);
-    await this.page.fill('#password', password);
-    await this.page.click('button[type="submit"]');
+  async login(user: string, pass: string) {
+    await this.username.fill(user);
+    await this.password.fill(pass);
+    await this.loginButton.click();
   }
-
 }
