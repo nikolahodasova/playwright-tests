@@ -13,10 +13,11 @@ export class LoginPage {
     this.loginButton = page.locator('#login-button');
   }
   async goto() {
-    await this.page.goto('https://www.saucedemo.com');
+    await this.page.goto('/');
   }
 
   async login(user: string, pass: string) {
+    await this.goto();
     await this.username.fill(user);
     await this.password.fill(pass);
     await this.loginButton.click();
